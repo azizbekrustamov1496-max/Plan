@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06121f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Intizom</title>
+<style>
+:root{
+  --bg:#06121f;--bg2:#0a1b2c;--card:#0d2236;--card2:#10293f;--line:#1b3a52;
+  --txt:#e8f1f8;--mut:#8aa4b8;--g:#14d98a;--g2:#0aa66a;--b:#3b82f6;--p:#8b5cf6;--o:#f59e0b;--r:#ef4444;--c:#22d3ee;
+  --nav:68px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;min-height:100%}
+body{background:radial-gradient(1200px 600px at 80% -10%,#0f3a4a55,transparent),var(--bg);padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 12px)}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.app{max-width:1100px;margin:0 auto;display:flex}
+.side{display:none}
+main{flex:1;min-width:0;padding:14px}
+.card{background:linear-gradient(160deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:18px;padding:16px}
+.grid{display:grid;gap:12px}
+h2{font-size:18px}
+h3{font-size:15px}
+.sub{color:var(--mut);font-size:12.5px;margin-top:2px}
+.row{display:flex;align-items:center;gap:10px}
+.sp{justify-content:space-between}
+.btn{background:var(--g);color:#032013;font-weight:700;padding:11px 16px;border-radius:12px;font-size:14px}
+.btn.alt{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
+.btn.sm{padding:7px 12px;font-size:12.5px;border-radius:10px}
+.btn.red{background:#3a1620;color:#ff8f9a;border:1px solid #5b2230}
+
+/* hero */
+.hero{border-radius:20px;padding:22px 18px;min-height:150px;position:relative;overflow:hidden;border:1px solid var(--line);
+  background:linear-gradient(180deg,#0b1d3a 0%,#2a2a5e 40%,#c2603a 78%,#f2a04a 100%)}
+.hero:after{content:"";position:absolute;right:-30px;bottom:-40px;width:230px;height:140px;background:radial-gradient(circle at 50% 100%,#ffd27a,#ffb04a 35%,transparent 70%);opacity:.85}
+.hero .mosque{position:absolute;right:14px;bottom:0;font-size:84px;opacity:.55;filter:drop-shadow(0 0 12px #000);z-index:1;line-height:1}
+.hero>*:not(.mosque){position:relative;z-index:2}
+.hero h1{font-size:25px;text-shadow:0 2px 8px #0008}
+.hero p{font-size:13.5px;opacity:.95;margin-top:4px;max-width:70%}
+.hero .date{margin-top:14px;font-size:13px;opacity:.95}
+
+/* prayers */
+.prow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.pc{border:1px solid var(--line);background:var(--card2);border-radius:16px;padding:12px 4px;text-align:center;transition:.2s}
+.pc .ic{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;margin:0 auto 6px;font-size:21px;background:#ffffff10}
+.pc b{display:block;font-size:13px}
+.pc .st{margin-top:8px;font-size:11px;padding:5px 2px;border-radius:9px;background:#ffffff0d;color:var(--mut)}
+.pc.on{background:linear-gradient(160deg,#0c3b33,#0a2a2a);border-color:#16805d}
+.pc.on .st{background:#0f5a43;color:#7bffc5;font-weight:700}
+.pl{display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;background:var(--card2);border:1px solid var(--line);width:100%;text-align:left;margin-bottom:8px}
+.pl .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:#ffffff10}
+.pl .nm{flex:1;font-weight:600}
+.chk{width:28px;height:28px;border-radius:50%;border:2px solid #34566f;display:grid;place-items:center;font-size:15px;color:transparent}
+.on>.chk,.pl.on .chk{background:var(--g);border-color:var(--g);color:#032013;font-weight:900}
+.pl.on{border-color:#16805d;background:linear-gradient(160deg,#0c3b33,#0a2a2a)}
+.badge{background:#0f5a43;color:#7bffc5;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
+
+/* stats */
+.mini{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px}
+.mini small{color:var(--mut);font-size:11.5px;display:block}
+.mini b{font-size:20px;display:block;margin-top:4px}
+.bar{height:9px;background:#ffffff12;border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--g2),var(--g))}
+.bl{display:flex;justify-content:space-between;font-size:13px;margin:12px 0 5px}
+.ring{position:relative;display:grid;place-items:center}
+.ring span{position:absolute;font-weight:800}
+.tabs{display:flex;gap:6px;background:var(--card2);padding:4px;border-radius:12px;border:1px solid var(--line)}
+.tabs button{flex:1;padding:8px;border-radius:9px;font-size:13px;color:var(--mut)}
+.tabs button.on{background:var(--b);color:#fff}
+
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.cal .h{font-size:11.5px;color:var(--mut);padding:4px 0}
+.cd{aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;background:var(--card2);border:1px solid transparent;position:relative}
+.cd.e{background:none}
+.cd.today{border-color:var(--b)}
+.cd.full{background:#0f5a43;color:#c7ffe6}
+.cd.part{background:#5a4a14;color:#ffe9a8}
+.cd.none{background:#4a1b25;color:#ffb3bd}
+.cd.fut{color:#5d7a90}
+.cd .dot{position:absolute;bottom:4px;width:5px;height:5px;border-radius:50%;background:var(--b)}
+.leg{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--mut);margin-top:12px}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+
+/* modal */
+.mod{position:fixed;inset:0;background:#000a;display:none;align-items:flex-end;justify-content:center;z-index:50}
+.mod.show{display:flex}
+.sheet{background:var(--bg2);border:1px solid var(--line);border-radius:22px 22px 0 0;width:100%;max-width:520px;padding:18px;max-height:88vh;overflow:auto}
+@media(min-width:700px){.mod{align-items:center}.sheet{border-radius:22px}}
+input,textarea,select{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:11px;font:inherit;font-size:14px;outline:none}
+input:focus,textarea:focus{border-color:var(--g)}
+label{font-size:12.5px;color:var(--mut);display:block;margin:10px 0 5px}
+
+/* nav */
+.bnav{position:fixed;left:0;right:0;bottom:0;background:#071729ee;backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:40}
+.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--mut);padding:6px 0;border-radius:12px}
+.bnav button span{font-size:19px}
+.bnav button.on{color:var(--g);background:#14d98a14}
+.side{width:230px;padding:18px 12px;position:sticky;top:0;height:100vh;border-right:1px solid var(--line)}
+.side .logo{display:flex;gap:10px;align-items:center;padding:6px 10px 20px}
+.side .logo .lg{font-size:30px}
+.side button{display:flex;gap:12px;align-items:center;width:100%;padding:12px;border-radius:12px;color:var(--mut);font-size:14.5px;margin-bottom:4px}
+.side button.on{background:#17407a;color:#fff}
+@media(min-width:900px){.side{display:block}.bnav{display:none}body{padding-bottom:20px}main{padding:20px}
+  .two{grid-template-columns:1.4fr 1fr}.three{grid-template-columns:repeat(3,1fr)}}
+.three{grid-template-columns:repeat(3,1fr)}
+.title{margin:4px 0 14px}
+.toast{position:fixed;left:50%;top:14px;transform:translateX(-50%);background:#0f5a43;color:#c7ffe6;padding:9px 16px;border-radius:12px;font-size:13px;z-index:99;display:none}
+.sync{font-size:11.5px;color:var(--mut)}
+.goal{margin-bottom:10px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" id="side"></aside>
+  <main id="view"></main>
+</div>
+<nav class="bnav" id="bnav"></nav>
+<div class="mod" id="mod"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+/* ====== FIREBASE SOZLAMASI ======
+   Variant 1: pastdagi obyektni o'z ma'lumotlaringiz bilan to'ldiring.
+   Variant 2: bo'sh qoldiring va ilovada  Sozlamalar → Firebase  bo'limiga joylang. */
+const FIREBASE_CONFIG = null;
+/* misol:
+const FIREBASE_CONFIG = {apiKey:"...",authDomain:"...",projectId:"...",storageBucket:"...",messagingSenderId:"...",appId:"..."};
+*/
+
+const PR=[{id:'bomdod',n:'Bomdod',i:'🌅'},{id:'peshin',n:'Peshin',i:'☀️'},{id:'asr',n:'Asr',i:'🌤️'},{id:'shom',n:'Shom',i:'🌇'},{id:'xufton',n:'Xufton',i:'🌙'}];
+const SP=[{id:'yugurish',n:'Yugurish',d:'30 daqiqa',i:'🏃'},{id:'tana',n:'Tana mashqlari',d:'20 daqiqa',i:'🤸'},{id:'velosiped',n:'Velosiped',d:'45 daqiqa',i:'🚴'},{id:'fitnes',n:'Fitnes',d:'1 soat',i:'🏋️'}];
+const MONTHS=['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentyabr','Oktyabr','Noyabr','Dekabr'];
+const WD=['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
+const QUOTES=['Har bir yaxshi odat, kelajakdagi baxtli sen uchun qilingan sarmoyadir.','Kichik qadamlar katta maqsadlarga olib boradi.','Intizom bugungi quvonch, ertangi erkinlik.','Eng yaxshi amal — davomli bo\'lgan amaldir.','Bugun o\'qigan namozing — ertangi xotirjamlik.','Qiyin bo\'lsa ham to\'xtama, davom et.'];
+const NAV=[['home','🏠','Bosh sahifa'],['namoz','🕌','Namoz'],['sport','🏋️','Sport'],['kal','📅','Kalendar'],['stat','📊','Statistika'],['goal','🎯','Maqsadlar'],['set','⚙️','Sozlamalar']];
+
+/* ---------- holat ---------- */
+let S=load();
+function load(){try{const d=JSON.parse(localStorage.getItem('intizom')||'null');if(d)return d}catch(e){}return{p:{},s:{},g:[],wk:4,t:0}}
+function key(d){const z=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())}
+const today=()=>key(new Date());
+const pd=k=>{const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const gp=k=>S.p[k]||[];
+const gs=k=>S.s[k]||[];
+let page='home',cur=new Date(),statTab='namoz';
+cur.setDate(1);
+
+/* ---------- saqlash / sinxronlash ---------- */
+let fb=null,user=null,saveT=null,syncMsg='Faqat shu qurilmada saqlanadi';
+function persist(){S.t=Date.now();localStorage.setItem('intizom',JSON.stringify(S));clearTimeout(saveT);saveT=setTimeout(pushCloud,700)}
+async function pushCloud(){
+  if(!fb||!user)return;
+  try{await fb.setDoc(fb.doc(fb.db,'users',user.uid),JSON.parse(JSON.stringify(S)));syncMsg='☁️ Bulutga saqlandi';}
+  catch(e){syncMsg='⚠️ Bulutga saqlab bo\'lmadi: '+e.code}
+  if(page==='set')render();
+}
+function parseCfg(txt){
+  const keys=['apiKey','authDomain','projectId','storageBucket','messagingSenderId','appId'],o={};
+  keys.forEach(k=>{const m=txt.match(new RegExp('["\']?'+k+'["\']?\\s*:\\s*["\']([^"\']+)["\']'));if(m)o[k]=m[1]});
+  return o.apiKey&&o.projectId&&o.appId?o:null;
+}
+async function initFB(){
+  let cfg=FIREBASE_CONFIG;
+  if(!cfg){try{cfg=JSON.parse(localStorage.getItem('intizom_fb')||'null')}catch(e){}}
+  if(!cfg)return;
+  try{
+    const V='10.12.2',B='https://www.gstatic.com/firebasejs/'+V+'/';
+    const [A,Au,F]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);
+    const app=A.initializeApp(cfg),auth=Au.getAuth(app),db=F.getFirestore(app);
+    fb={auth,db,doc:F.doc,getDoc:F.getDoc,setDoc:F.setDoc,Au,F};
+    Au.onAuthStateChanged(auth,async u=>{
+      user=u;
+      if(u){
+        syncMsg='☁️ Ulandi: '+(u.email||'foydalanuvchi');
+        try{
+          const snap=await F.getDoc(F.doc(db,'users',u.uid));
+          if(snap.exists()){const c=snap.data();if((c.t||0)>(S.t||0)){S=c;localStorage.setItem('intizom',JSON.stringify(S))}else await pushCloud()}
+          else await pushCloud();
+        }catch(e){syncMsg='⚠️ Bulutdan o\'qib bo\'lmadi: '+e.code}
+      }else syncMsg='Kirish qilinmagan (faqat shu qurilmada)';
+      render();
+    });
+  }catch(e){syncMsg='⚠️ Firebase xatosi: '+e.message;render()}
+}
+async function login(){
+  if(!fb)return toast('Avval Firebase sozlamasini kiriting');
+  const p=new fb.Au.GoogleAuthProvider();
+  try{await fb.Au.signInWithPopup(fb.auth,p)}catch(e){
+    if(['auth/popup-blocked','auth/operation-not-supported-in-this-environment'].includes(e.code))fb.Au.signInWithRedirect(fb.auth,p);
+    else toast('Kirish xatosi: '+e.code)}
+}
+const logout=()=>fb&&fb.Au.signOut(fb.auth);
+
+/* ---------- hisob-kitob ---------- */
+function dayState(k){const n=gp(k).length;return n===5?'full':n>0?'part':'none'}
+function streak(){
+  let d=new Date(),n=0;
+  if(gp(key(d)).length<5)d.setDate(d.getDate()-1);
+  while(gp(key(d)).length===5){n++;d.setDate(d.getDate()-1)}
+  return n;
+}
+function monthStats(y,m){
+  const now=new Date(),last=(y===now.getFullYear()&&m===now.getMonth())?now.getDate():new Date(y,m+1,0).getDate();
+  const isFut=new Date(y,m,1)>now;
+  const per={};PR.forEach(p=>per[p.id]=0);let done=0,sport=0,full=0;
+  if(!isFut)for(let d=1;d<=last;d++){
+    const k=key(new Date(y,m,d)),a=gp(k);
+    a.forEach(i=>{if(per[i]!==undefined)per[i]++});done+=a.length;if(a.length===5)full++;if(gs(k).length)sport++;
+  }
+  const days=isFut?0:last;
+  return{days,total:days*5,done,per,sport,full,pct:days?Math.round(done/(days*5)*100):0,dim:new Date(y,m+1,0).getDate()};
+}
+function weekSport(){
+  const d=new Date(),dow=(d.getDay()+6)%7;d.setDate(d.getDate()-dow);let n=0;
+  for(let i=0;i<7;i++){if(gs(key(d)).length)n++;d.setDate(d.getDate()+1)}return n;
+}
+function qazo(){ // so'nggi 30 kun (bugundan tashqari) o'qilmagan namozlar
+  let n=0;const d=new Date();for(let i=1;i<=30;i++){d.setDate(d.getDate()-1);n+=5-gp(key(d)).length}return n;
+}
+function ring(p,size=96,col='#14d98a',txt){
+  const r=size/2-8,c=2*Math.PI*r;
+  return `<div class="ring" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" style="transform:rotate(-90deg)"><circle cx="${size/2}" cy="${size/2}" r="${r}" stroke="#ffffff14" stroke-width="9" fill="none"/><circle cx="${size/2}" cy="${size/2}" r="${r}" stroke="${col}" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-Math.min(p,100)/100)}"/></svg><span style="font-size:${size/4.4}px">${txt??p+'%'}</span></div>`;
+}
+
+/* ---------- amallar ---------- */
+function togP(k,id){const a=gp(k).slice();const i=a.indexOf(id);i>-1?a.splice(i,1):a.push(id);S.p[k]=a;persist()}
+function togS(k,id){const a=gs(k).slice();const i=a.indexOf(id);i>-1?a.splice(i,1):a.push(id);S.s[k]=a;persist()}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.style.display='block';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2200)}
+function openMod(h){document.getElementById('sheet').innerHTML=h;document.getElementById('mod').classList.add('show')}
+function closeMod(){document.getElementById('mod').classList.remove('show')}
+
+/* ---------- sahifalar ---------- */
+function prayerCards(k,big){
+  return PR.map(p=>{const on=gp(k).includes(p.id);return `<button class="pc ${on?'on':''}" data-a="tp" data-k="${k}" data-id="${p.id}"><div class="ic">${p.i}</div><b>${p.n}</b><div class="st">${on?'✓ O\'qildi':'Belgilash'}</div></button>`}).join('');
+}
+function pHome(){
+  const t=today(),n=gp(t).length,d=new Date(),ms=monthStats(d.getFullYear(),d.getMonth());
+  const sd=gs(t).length>0,ws=weekSport(),q=QUOTES[d.getDate()%QUOTES.length];
+  return `
+  <div class="grid two">
+   <div class="grid">
+    <div class="hero"><div class="mosque">🕌</div><h1>Assalomu alaykum!</h1><p>Bugungi kun ham yaxshi amallar bilan boshlansin. 💚</p><div class="date">📅 ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()} · ${WD[d.getDay()]}</div></div>
+    <div class="card"><div class="row sp" style="margin-bottom:12px"><div><h2>🕌 Namozlar</h2><div class="sub">Bugungi namozlaringiz</div></div><span class="badge">${n}/5 ${n===5?'Barchasi o\'qildi ✓':''}</span></div><div class="prow">${prayerCards(t)}</div></div>
+    <div class="grid" style="grid-template-columns:1fr 1.3fr">
+     <div class="card"><h3>🏋️ Sport</h3><div class="sub">Bugungi mashg'ulotlar</div><div class="row" style="margin-top:12px;gap:14px">${ring(Math.round(ws/S.wk*100),84,'#14d98a')}<div><b style="font-size:17px">${ws}/${S.wk}</b><div class="sub">hafta davomida</div></div></div><button class="btn sm" style="margin-top:12px;width:100%" data-a="go" data-p="sport">${sd?'✓ Bugun bajarildi':'Mashg\'ulotni boshlash'}</button></div>
+     <div class="card"><h3>Umumiy statistika</h3><div class="sub">Bu oy davomida</div><div class="grid three" style="margin-top:10px;gap:8px"><div class="mini"><small>Namozlar</small><b>${ms.done}/${ms.total}</b></div><div class="mini"><small>Sport</small><b>${ms.sport}/${ms.days}</b></div><div class="mini"><small>Ketma-ket</small><b>🔥${streak()}</b></div></div></div>
+    </div>
+   </div>
+   <div class="grid" style="align-content:start">
+    <div class="card" style="text-align:center"><div style="font-size:26px">﷽</div><p style="margin-top:8px;font-size:14px;line-height:1.5">«Albatta, namoz mo'minlarga vaqti belgilangan farzdir.»</p><div class="sub">(Niso surasi, 103-oyat)</div></div>
+    <div class="card"><h3>💡 Bugungi motivatsiya</h3><p style="margin:10px 0;font-size:14px;line-height:1.5;color:#c9dae6">${q}</p><button class="btn sm alt" data-a="go" data-p="namoz">→ Davom et</button></div>
+    <div class="card" style="background:linear-gradient(160deg,#0b2a3a,#1b3b2f);text-align:center"><h3 style="line-height:1.4">Kichik qadamlar katta maqsadlarga olib boradi.</h3><button class="btn sm" style="margin-top:12px" data-a="go" data-p="goal">Maqsadlarim →</button></div>
+   </div>
+  </div>`;
+}
+function pNamoz(){
+  const t=today(),n=gp(t).length;
+  return `<div class="title row sp"><div><h2>🕌 Namoz</h2><div class="sub">Bugungi namozlarni belgilang</div></div><span class="badge">${n}/5</span></div>
+  <div class="card">${PR.map(p=>{const on=gp(t).includes(p.id);return `<button class="pl ${on?'on':''}" data-a="tp" data-k="${t}" data-id="${p.id}"><div class="ic">${p.i}</div><div class="nm">${p.n}</div><div class="chk">✓</div></button>`}).join('')}
+  <button class="btn" style="width:100%;margin-top:6px" data-a="allp">${n===5?'Hammasini bekor qilish':'Barchasini belgilash'}</button></div>
+  <div class="card" style="margin-top:12px"><div class="row sp"><div><h3>🔥 Ketma-ket kunlar</h3><div class="sub">5 vaqt to'liq o'qilgan kunlar</div></div><b style="font-size:26px">${streak()}</b></div></div>
+  <div class="card" style="margin-top:12px"><div class="row sp"><div><h3>⏳ Qazo (so'nggi 30 kun)</h3><div class="sub">O'qilmagan namozlar soni. Kalendardan kunni bosib to'ldirib qo'yishingiz mumkin.</div></div><b style="font-size:26px;color:${qazo()?'var(--o)':'var(--g)'}">${qazo()}</b></div></div>`;
+}
+function pSport(){
+  const t=today(),ws=weekSport(),a=gs(t);
+  return `<div class="title row sp"><div><h2>🏋️ Sport</h2><div class="sub">Jismoniy faollik va sog'lom hayot</div></div></div>
+  <div class="card row" style="gap:16px">${ring(Math.round(ws/S.wk*100),92)}<div><b style="font-size:18px">${ws}/${S.wk}</b><div class="sub">haftalik maqsad (kun)</div><div class="row" style="margin-top:8px"><button class="btn alt sm" data-a="wk" data-v="-1">−</button><button class="btn alt sm" data-a="wk" data-v="1">+</button></div></div></div>
+  <div class="card" style="margin-top:12px"><h3 style="margin-bottom:12px">Bugungi mashg'ulotlar</h3>${SP.map(s=>`<button class="pl ${a.includes(s.id)?'on':''}" data-a="ts" data-k="${t}" data-id="${s.id}"><div class="ic">${s.i}</div><div class="nm">${s.n}<div class="sub">${s.d}</div></div><div class="chk">✓</div></button>`).join('')}</div>
+  <div class="card" style="margin-top:12px"><h3 style="margin-bottom:8px">Shu hafta</h3><div class="row" style="justify-content:space-between">${weekDots()}</div></div>`;
+}
+function weekDots(){
+  const d=new Date(),dow=(d.getDay()+6)%7;d.setDate(d.getDate()-dow);const nm=['Du','Se','Ch','Pa','Ju','Sh','Ya'];let h='';
+  for(let i=0;i<7;i++){const k=key(d),on=gs(k).length>0,isT=k===today();h+=`<div style="text-align:center;font-size:12px;color:var(--mut)">${nm[i]}<div style="margin-top:6px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:${on?'var(--g)':'var(--card2)'};color:${on?'#032013':'var(--mut)'};border:1px solid ${isT?'var(--b)':'var(--line)'}">${on?'✓':d.getDate()}</div></div>`;d.setDate(d.getDate()+1)}return h;
+}
+function pKal(){
+  const y=cur.getFullYear(),m=cur.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,dim=new Date(y,m+1,0).getDate(),t=today();
+  let c=['Du','Se','Ch','Pa','Ju','Sh','Ya'].map(x=>`<div class="h">${x}</div>`).join('');
+  for(let i=0;i<first;i++)c+='<div class="cd e"></div>';
+  for(let d=1;d<=dim;d++){
+    const k=key(new Date(y,m,d)),fut=k>t;
+    const cls=fut?'fut':dayState(k);
+    c+=`<button class="cd ${cls} ${k===t?'today':''}" data-a="day" data-k="${k}">${d}${gs(k).length?'<i class="dot"></i>':''}</button>`;
+  }
+  return `<div class="title"><h2>📅 Kalendar</h2><div class="sub">Oylik namoz va sport jadvali. Kunni bosib tahrirlang.</div></div>
+  <div class="card"><div class="row sp" style="margin-bottom:12px"><button class="btn alt sm" data-a="mo" data-v="-1">‹</button><b>${MONTHS[m]} ${y}</b><button class="btn alt sm" data-a="mo" data-v="1">›</button></div><div class="cal">${c}</div>
+  <div class="leg"><span><i style="background:#14d98a"></i>5/5 o'qilgan</span><span><i style="background:#e0b52f"></i>Qisman</span><span><i style="background:#e0485f"></i>O'qilmagan</span><span><i style="background:var(--b)"></i>Sport</span></div></div>`;
+}
+function dayModal(k){
+  const d=pd(k);
+  openMod(`<div class="row sp"><h3>${d.getDate()} ${MONTHS[d.getMonth()]}, ${WD[d.getDay()]}</h3><button class="btn alt sm" data-a="close">✕</button></div><div style="margin-top:14px">
+   ${PR.map(p=>`<button class="pl ${gp(k).includes(p.id)?'on':''}" data-a="tpm" data-k="${k}" data-id="${p.id}"><div class="ic">${p.i}</div><div class="nm">${p.n}</div><div class="chk">✓</div></button>`).join('')}
+   <button class="pl ${gs(k).length?'on':''}" data-a="tsm" data-k="${k}"><div class="ic">🏋️</div><div class="nm">Sport qilindi</div><div class="chk">✓</div></button></div>`);
+}
+function missedCard(y,m){
+  const t=today(),dim=new Date(y,m+1,0).getDate();let rows='',cnt=0;
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(y,m,d),k=key(dt);if(k>=t)break;
+    const miss=PR.filter(p=>!gp(k).includes(p.id));if(!miss.length)continue;
+    cnt+=miss.length;
+    rows+=`<div style="padding:10px 0;border-top:1px solid var(--line)"><div class="sub" style="margin:0 0 6px">${d}-${MONTHS[m].toLowerCase()}, ${WD[dt.getDay()]}</div><div class="row" style="flex-wrap:wrap;gap:6px">${miss.map(p=>`<button class="btn red sm" data-a="tpq" data-k="${k}" data-id="${p.id}">${p.i} ${p.n}</button>`).join('')}</div></div>`;
+  }
+  return `<div class="card" style="margin-top:12px"><div class="row sp"><h3>❌ O'qilmagan namozlar</h3><span class="badge" style="background:#4a1b25;color:#ffb3bd">${cnt}</span></div><div class="sub" style="margin-top:4px">Qaysi kuni qaysi namoz o'qilmagan. Qazosini o'qisangiz, ustiga bosib belgilang.</div>${rows||'<div class="sub" style="margin-top:12px;color:var(--g)">Bu oyda o\'qilmagan namoz yo\'q, barakalla! 🎉</div>'}</div>`;
+}
+function pStat(){
+  const y=cur.getFullYear(),m=cur.getMonth(),ms=monthStats(y,m);
+  let body='';
+  if(statTab==='namoz'){
+    body=`<div class="card row" style="gap:16px">${ring(ms.pct,104)}<div><div class="sub">O'qilgan namozlar</div><b style="font-size:24px">${ms.done} / ${ms.total}</b><div class="sub" style="margin-top:6px">O'qilmagan: <b style="color:var(--o)">${ms.total-ms.done}</b></div></div></div>
+    <div class="card" style="margin-top:12px">${PR.map((p,i)=>{const v=ms.per[p.id],pc=ms.days?Math.round(v/ms.days*100):0;const cl=['#14d98a','#22d3ee','#3b82f6','#8b5cf6','#a78bfa'][i];return `<div class="bl"><span>${p.i} ${p.n}</span><span>${v}/${ms.days}</span></div><div class="bar"><i style="width:${pc}%;background:${cl}"></i></div>`}).join('')}</div>
+    <div class="grid three" style="margin-top:12px;gap:8px"><div class="mini"><small>To'liq kunlar</small><b>${ms.full}</b></div><div class="mini"><small>Ketma-ket</small><b>🔥${streak()}</b></div><div class="mini"><small>Qazo (30 kun)</small><b>${qazo()}</b></div></div>${missedCard(y,m)}`;
+  }else if(statTab==='sport'){
+    const pc=ms.days?Math.round(ms.sport/ms.days*100):0;
+    body=`<div class="card row" style="gap:16px">${ring(pc,104,'#3b82f6')}<div><div class="sub">Sport qilingan kunlar</div><b style="font-size:24px">${ms.sport} / ${ms.days}</b></div></div>`;
+  }else{
+    body=`<div class="grid three" style="gap:8px"><div class="mini"><small>Namozlar</small><b>${ms.done}/${ms.total}</b></div><div class="mini"><small>Sport</small><b>${ms.sport}/${ms.days}</b></div><div class="mini"><small>Namoz %</small><b>${ms.pct}%</b></div></div>
+    <div class="card" style="margin-top:12px"><h3>Maqsadlar</h3>${S.g.length?S.g.map(g=>`<div class="bl"><span>${g.t}</span><span>${g.v}/${g.n}</span></div><div class="bar"><i style="width:${Math.min(100,g.v/g.n*100)}%"></i></div>`).join(''):'<div class="sub" style="margin-top:8px">Maqsad qo\'shilmagan</div>'}</div>`;
+  }
+  return `<div class="title"><h2>📊 Statistika</h2></div>
+  <div class="row sp" style="margin-bottom:12px"><button class="btn alt sm" data-a="mo" data-v="-1">‹</button><b>${MONTHS[m]} ${y}</b><button class="btn alt sm" data-a="mo" data-v="1">›</button></div>
+  <div class="tabs" style="margin-bottom:12px">${[['namoz','Namoz'],['sport','Sport'],['all','Umumiy']].map(t=>`<button class="${statTab===t[0]?'on':''}" data-a="stab" data-v="${t[0]}">${t[1]}</button>`).join('')}</div>${body}`;
+}
+function pGoal(){
+  return `<div class="title row sp"><div><h2>🎯 Maqsadlar</h2><div class="sub">O'z maqsadlaringizni belgilang</div></div><button class="btn sm" data-a="addg">+ Yangi</button></div>
+  <div class="card">${S.g.length?S.g.map((g,i)=>`<div class="goal"><div class="row sp"><b>${g.t}</b><span class="sub">${g.v}/${g.n} ${g.u||''}</span></div><div class="bar" style="margin:8px 0"><i style="width:${Math.min(100,g.v/g.n*100)}%"></i></div><div class="row"><button class="btn alt sm" data-a="gv" data-i="${i}" data-v="-1">−</button><button class="btn sm" data-a="gv" data-i="${i}" data-v="1">+1</button><button class="btn red sm" data-a="gd" data-i="${i}" style="margin-left:auto">O'chirish</button></div></div>`).join('<hr style="border:0;border-top:1px solid var(--line);margin:12px 0">'):'<div class="sub">Hali maqsad yo\'q. «+ Yangi» tugmasini bosing. Masalan: «Kitob o\'qish — 4 ta», «Qur\'on — 30 bet».</div>'}</div>`;
+}
+function pSet(){
+  const has=!!(FIREBASE_CONFIG||localStorage.getItem('intizom_fb'));
+  return `<div class="title"><h2>⚙️ Sozlamalar</h2></div>
+  <div class="card"><h3>☁️ Bulutli saqlash (Firebase)</h3><div class="sync" style="margin:6px 0 12px">${syncMsg}</div>
+   ${user?`<button class="btn red" data-a="logout">Chiqish (${user.email||''})</button>`:`<button class="btn" data-a="login">Google bilan kirish</button>`}
+   <label>Firebase sozlamasi (firebaseConfig ni shu yerga joylang)</label><textarea id="fbcfg" rows="6" placeholder='{ apiKey: "...", authDomain: "...", projectId: "...", storageBucket: "...", messagingSenderId: "...", appId: "..." }'></textarea>
+   <div class="row" style="margin-top:10px"><button class="btn alt" data-a="savecfg">Saqlash</button>${has?'<button class="btn red sm" data-a="clrcfg">O\'chirish</button>':''}</div></div>
+  <div class="card" style="margin-top:12px"><h3>💾 Zaxira nusxa</h3><div class="sub" style="margin:6px 0 12px">Ma'lumotlarni fayl qilib yuklab oling.</div><button class="btn alt" data-a="export">Yuklab olish (JSON)</button></div>
+  <div class="card" style="margin-top:12px"><h3>Hafta maqsadi</h3><div class="sub">Sport sahifasida o'zgartiriladi: hozir haftasiga ${S.wk} kun.</div></div>`;
+}
+
+/* ---------- render ---------- */
+function render(){
+  document.getElementById('view').innerHTML={home:pHome,namoz:pNamoz,sport:pSport,kal:pKal,stat:pStat,goal:pGoal,set:pSet}[page]();
+  const nav=NAV.map(n=>`<button class="${page===n[0]?'on':''}" data-a="go" data-p="${n[0]}"><span>${n[1]}</span>${n[2]}</button>`).join('');
+  document.getElementById('bnav').innerHTML=NAV.map(n=>`<button class="${page===n[0]?'on':''}" data-a="go" data-p="${n[0]}"><span>${n[1]}</span>${n[2].split(' ')[0]}</button>`).join('');
+  document.getElementById('side').innerHTML=`<div class="logo"><div class="lg">🕌</div><div><b style="font-size:19px">Intizom</b><div class="sub">Yaxshilik sari har qadam</div></div></div>`+nav;
+}
+
+/* ---------- hodisalar ---------- */
+document.addEventListener('click',e=>{
+  if(e.target.id==='mod'){closeMod();return}
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const a=b.dataset.a,k=b.dataset.k,id=b.dataset.id,v=+b.dataset.v;
+  const scroll=window.scrollY;
+  switch(a){
+    case'go':page=b.dataset.p;cur=new Date();cur.setDate(1);render();window.scrollTo(0,0);return;
+    case'tp':togP(k,id);break;
+    case'tpq':togP(k,id);toast('✓ Belgilandi');break;
+    case'tpm':togP(k,id);dayModal(k);break;
+    case'tsm':{const a2=gs(k).length?[]:['yugurish'];S.s[k]=a2;persist();dayModal(k);break}
+    case'ts':togS(k,id);break;
+    case'allp':{const t=today();S.p[t]=gp(t).length===5?[]:PR.map(p=>p.id);persist();break}
+    case'wk':S.wk=Math.max(1,Math.min(7,S.wk+v));persist();break;
+    case'mo':cur=new Date(cur.getFullYear(),cur.getMonth()+v,1);break;
+    case'day':dayModal(k);return;
+    case'close':closeMod();break;
+    case'stab':statTab=b.dataset.v;break;
+    case'addg':openMod(`<h3>Yangi maqsad</h3><label>Nomi</label><input id="gt" placeholder="Masalan: Kitob o'qish"><label>Nechta / qancha (maqsad)</label><input id="gn" type="number" value="10"><label>Birlik (ixtiyoriy)</label><input id="gu" placeholder="ta, bet, km..."><div class="row" style="margin-top:14px"><button class="btn" data-a="saveg">Qo'shish</button><button class="btn alt" data-a="close">Bekor</button></div>`);return;
+    case'saveg':{const t=document.getElementById('gt').value.trim(),n=+document.getElementById('gn').value;if(!t||!n)return toast('Nomi va sonini kiriting');S.g.push({t,n,v:0,u:document.getElementById('gu').value.trim()});persist();closeMod();break}
+    case'gv':{const g=S.g[+b.dataset.i];g.v=Math.max(0,g.v+v);persist();if(g.v===g.n)toast('🎉 Maqsadga erishdingiz!');break}
+    case'gd':if(confirm('O\'chirilsinmi?')){S.g.splice(+b.dataset.i,1);persist()}break;
+    case'login':login();return;
+    case'logout':logout();return;
+    case'savecfg':{const c=parseCfg(document.getElementById('fbcfg').value);if(!c)return toast('Sozlama noto\'g\'ri');localStorage.setItem('intizom_fb',JSON.stringify(c));toast('Saqlandi, qayta yuklanmoqda…');setTimeout(()=>location.reload(),900);return}
+    case'clrcfg':localStorage.removeItem('intizom_fb');location.reload();return;
+    case'export':{const bl=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});const u=URL.createObjectURL(bl),l=document.createElement('a');l.href=u;l.download='intizom-zaxira.json';l.click();return}
+  }
+  render();window.scrollTo(0,scroll);
+});
+
+render();
+initFB();
+</script>
+</body>
+</html>
