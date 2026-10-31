@@ -240,6 +240,7 @@ async function login(){
 const logout=()=>fb&&fb.Au.signOut(fb.auth);
 
 /* ---------- hisob-kitob ---------- */
+const st=()=>S.start||'0000-00-00';
 function dayState(k){const n=gp(k).length;return n===5?'full':n>0?'part':'none'}
 function streak(){
   let d=new Date(),n=0;
@@ -251,11 +252,12 @@ function monthStats(y,m){
   const now=new Date(),last=(y===now.getFullYear()&&m===now.getMonth())?now.getDate():new Date(y,m+1,0).getDate();
   const isFut=new Date(y,m,1)>now;
   const per={};PR.forEach(p=>per[p.id]=0);let done=0,sport=0,full=0;
+  let nd=0;
   if(!isFut)for(let d=1;d<=last;d++){
-    const k=key(new Date(y,m,d)),a=gp(k);
+    const k=key(new Date(y,m,d));if(k<st())continue;nd++;const a=gp(k);
     a.forEach(i=>{if(per[i]!==undefined)per[i]++});done+=a.length;if(a.length===5)full++;if(gs(k).length)sport++;
   }
-  const days=isFut?0:last;
+  const days=nd;
   return{days,total:days*5,done,per,sport,full,pct:days?Math.round(done/(days*5)*100):0,dim:new Date(y,m+1,0).getDate()};
 }
 function weekSport(){
@@ -263,7 +265,7 @@ function weekSport(){
   for(let i=0;i<7;i++){if(gs(key(d)).length)n++;d.setDate(d.getDate()+1)}return n;
 }
 function qazo(){ // so'nggi 30 kun (bugundan tashqari) o'qilmagan namozlar
-  let n=0;const d=new Date();for(let i=1;i<=30;i++){d.setDate(d.getDate()-1);n+=5-gp(key(d)).length}return n;
+  let n=0;const d=new Date();for(let i=1;i<=30;i++){d.setDate(d.getDate()-1);const k=key(d);if(k<st())continue;n+=5-gp(k).length}return n;
 }
 function ring(p,size=96,col='#14d98a',txt){
   const r=size/2-8,c=2*Math.PI*r;
@@ -326,7 +328,7 @@ function pKal(){
   for(let i=0;i<first;i++)c+='<div class="cd e"></div>';
   for(let d=1;d<=dim;d++){
     const k=key(new Date(y,m,d)),fut=k>t;
-    const cls=fut?'fut':dayState(k);
+    const cls=(fut||k<st())?'fut':dayState(k);
     c+=`<button class="cd ${cls} ${k===t?'today':''}" data-a="day" data-k="${k}">${d}${gs(k).length?'<i class="dot"></i>':''}</button>`;
   }
   return `<div class="title"><h2>📅 Kalendar</h2><div class="sub">Oylik namoz va sport jadvali. Kunni bosib tahrirlang.</div></div>
@@ -342,7 +344,7 @@ function dayModal(k){
 function missedCard(y,m){
   const t=today(),dim=new Date(y,m+1,0).getDate();let rows='',cnt=0;
   for(let d=1;d<=dim;d++){
-    const dt=new Date(y,m,d),k=key(dt);if(k>=t)break;
+    const dt=new Date(y,m,d),k=key(dt);if(k>=t)break;if(k<st())continue;
     const miss=PR.filter(p=>!gp(k).includes(p.id));if(!miss.length)continue;
     cnt+=miss.length;
     rows+=`<div style="padding:10px 0;border-top:1px solid var(--line)"><div class="sub" style="margin:0 0 6px">${d}-${MONTHS[m].toLowerCase()}, ${WD[dt.getDay()]}</div><div class="row" style="flex-wrap:wrap;gap:6px">${miss.map(p=>`<button class="btn red sm" data-a="tpq" data-k="${k}" data-id="${p.id}">${p.i} ${p.n}</button>`).join('')}</div></div>`;
@@ -378,6 +380,8 @@ function pSet(){
    ${user?`<button class="btn red" data-a="logout">Chiqish (${user.email||''})</button>`:`<button class="btn" data-a="login">Google bilan kirish</button>`}
    <label>Firebase sozlamasi (firebaseConfig ni shu yerga joylang)</label><textarea id="fbcfg" rows="6" placeholder='{ apiKey: "...", authDomain: "...", projectId: "...", storageBucket: "...", messagingSenderId: "...", appId: "..." }'></textarea>
    <div class="row" style="margin-top:10px"><button class="btn alt" data-a="savecfg">Saqlash</button>${has?'<button class="btn red sm" data-a="clrcfg">O\'chirish</button>':''}</div></div>
+  <div class="card" style="margin-top:12px"><h3>🗓️ Boshlanish sanasi</h3><div class="sub" style="margin:6px 0 10px">Shu sanadan oldingi kunlar statistikaga va «o'qilmagan»larga kirmaydi.</div><input type="date" id="sd" value="${S.start||''}"><button class="btn alt" style="margin-top:10px" data-a="setstart">Sanani saqlash</button></div>
+  <div class="card" style="margin-top:12px"><h3>🧹 Hammasini 0 dan boshlash</h3><div class="sub" style="margin:6px 0 12px">Barcha namoz, sport va maqsadlar o'chiriladi (bulutdagisi ham). Boshlanish sanasi ertaga bo'ladi. Qaytarib bo'lmaydi.</div><button class="btn red" data-a="reset">Hammasini o'chirish</button></div>
   <div class="card" style="margin-top:12px"><h3>💾 Zaxira nusxa</h3><div class="sub" style="margin:6px 0 12px">Ma'lumotlarni fayl qilib yuklab oling.</div><button class="btn alt" data-a="export">Yuklab olish (JSON)</button></div>
   <div class="card" style="margin-top:12px"><h3>Hafta maqsadi</h3><div class="sub">Sport sahifasida o'zgartiriladi: hozir haftasiga ${S.wk} kun.</div></div>`;
 }
@@ -433,6 +437,12 @@ document.addEventListener('click',e=>{
     case'saveg':{const t=document.getElementById('gt').value.trim(),n=+document.getElementById('gn').value;if(!t||!n)return toast('Nomi va sonini kiriting');S.g.push({t,n,v:0,u:document.getElementById('gu').value.trim()});persist();closeMod();break}
     case'gv':{const g=S.g[+b.dataset.i];g.v=Math.max(0,g.v+v);persist();if(g.v===g.n)toast('🎉 Maqsadga erishdingiz!');break}
     case'gd':if(confirm('O\'chirilsinmi?')){S.g.splice(+b.dataset.i,1);persist()}break;
+    case'setstart':S.start=document.getElementById('sd').value||'';persist();toast('Saqlandi');break;
+    case'reset':{
+      if(!confirm('Hamma ma\'lumot o\'chiriladi. Davom etasizmi?'))return;
+      if(!confirm('Aniq o\'chirasizmi? Qaytarib bo\'lmaydi.'))return;
+      const tm=new Date();tm.setDate(tm.getDate()+1);
+      S={p:{},s:{},g:[],wk:S.wk||4,t:0,start:key(tm)};persist();clearTimeout(saveT);pushCloud();toast('Tozalandi. Start: '+S.start);break}
     case'login':login();return;
     case'logout':logout();return;
     case'savecfg':{const c=parseCfg(document.getElementById('fbcfg').value);if(!c)return toast('Sozlama noto\'g\'ri');localStorage.setItem('intizom_fb',JSON.stringify(c));toast('Saqlandi, qayta yuklanmoqda…');setTimeout(()=>location.reload(),900);return}
