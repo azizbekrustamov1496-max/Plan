@@ -6,6 +6,10 @@
 <meta name="theme-color" content="#06121f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Intizom">
+<link rel="manifest" id="mf">
+<link rel="icon" id="ic" type="image/svg+xml">
 <title>Intizom</title>
 <style>
 :root{
@@ -95,8 +99,31 @@ input:focus,textarea:focus{border-color:var(--g)}
 label{font-size:12.5px;color:var(--mut);display:block;margin:10px 0 5px}
 
 /* nav */
-.bnav{position:fixed;left:0;right:0;bottom:0;background:#071729ee;backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:40}
-.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--mut);padding:6px 0;border-radius:12px}
+.bnav{position:fixed;left:0;right:0;bottom:0;background:#071729ee;backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:40;overflow-x:auto;scrollbar-width:none}
+.bnav::-webkit-scrollbar{display:none}
+.duo{grid-template-columns:1fr 1.3fr}
+html,body{overscroll-behavior-x:none}
+body{padding-top:env(safe-area-inset-top)}
+@media(max-width:520px){
+  .duo{grid-template-columns:1fr}
+  main{padding:10px}
+  .card{padding:14px;border-radius:16px}
+  .prow{gap:5px}
+  .pc{padding:10px 2px;border-radius:14px}
+  .pc .ic{width:36px;height:36px;font-size:18px}
+  .pc b{font-size:11.5px}
+  .pc .st{font-size:9.5px;padding:5px 1px}
+  .hero{padding:18px 14px;min-height:140px}
+  .hero h1{font-size:21px}
+  .hero p{max-width:60%;font-size:12.5px}
+  .hero .mosque{font-size:70px}
+  h2{font-size:17px}
+  .mini b{font-size:17px}
+  .cal{gap:4px}
+  .cd{font-size:12px;border-radius:10px}
+  .btn{padding:12px 14px}
+}
+.bnav button{flex:1 0 58px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--mut);padding:6px 0;border-radius:12px}
 .bnav button span{font-size:19px}
 .bnav button.on{color:var(--g);background:#14d98a14}
 .side{width:230px;padding:18px 12px;position:sticky;top:0;height:100vh;border-right:1px solid var(--line)}
@@ -127,7 +154,14 @@ label{font-size:12.5px;color:var(--mut);display:block;margin:10px 0 5px}
 /* ====== FIREBASE SOZLAMASI ======
    Variant 1: pastdagi obyektni o'z ma'lumotlaringiz bilan to'ldiring.
    Variant 2: bo'sh qoldiring va ilovada  Sozlamalar → Firebase  bo'limiga joylang. */
-const FIREBASE_CONFIG = null;
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAnUBXIyRuKuu4BZUlMNbmGuIwwcZZAxgc",
+  authDomain: "intizom-dce69.firebaseapp.com",
+  projectId: "intizom-dce69",
+  storageBucket: "intizom-dce69.firebasestorage.app",
+  messagingSenderId: "810687995263",
+  appId: "1:810687995263:web:06b0f863627b747acf4e4a"
+};
 /* misol:
 const FIREBASE_CONFIG = {apiKey:"...",authDomain:"...",projectId:"...",storageBucket:"...",messagingSenderId:"...",appId:"..."};
 */
@@ -138,6 +172,15 @@ const MONTHS=['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sen
 const WD=['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
 const QUOTES=['Har bir yaxshi odat, kelajakdagi baxtli sen uchun qilingan sarmoyadir.','Kichik qadamlar katta maqsadlarga olib boradi.','Intizom bugungi quvonch, ertangi erkinlik.','Eng yaxshi amal — davomli bo\'lgan amaldir.','Bugun o\'qigan namozing — ertangi xotirjamlik.','Qiyin bo\'lsa ham to\'xtama, davom et.'];
 const NAV=[['home','🏠','Bosh sahifa'],['namoz','🕌','Namoz'],['sport','🏋️','Sport'],['kal','📅','Kalendar'],['stat','📊','Statistika'],['goal','🎯','Maqsadlar'],['set','⚙️','Sozlamalar']];
+
+/* ---------- ikonka va manifest (bitta fayl ichida) ---------- */
+(function(){
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1d3a"/><stop offset="1" stop-color="#06121f"/></linearGradient><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3dffb0"/><stop offset="1" stop-color="#0aa66a"/></linearGradient></defs><rect width="512" height="512" rx="110" fill="url(#bg)"/><path d="M256 96C196 150 150 190 150 250L150 400L362 400L362 250C362 190 316 150 256 96Z" fill="none" stroke="url(#gr)" stroke-width="26" stroke-linejoin="round"/><path d="M256 250C220 250 204 280 204 310L204 400L308 400L308 310C308 280 292 250 256 250Z" fill="url(#gr)"/><circle cx="256" cy="70" r="12" fill="#3dffb0"/></svg>';
+  const icon='data:image/svg+xml,'+encodeURIComponent(svg);
+  document.getElementById('ic').href=icon;
+  const mf={name:'Intizom',short_name:'Intizom',description:'Namoz, sport va maqsadlarni rejalashtirish',start_url:location.href.split('#')[0],scope:location.href.split('#')[0].replace(/[^/]*$/,''),display:'standalone',orientation:'portrait',background_color:'#06121f',theme_color:'#06121f',icons:[{src:icon,sizes:'any',type:'image/svg+xml'}]};
+  document.getElementById('mf').href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/manifest+json'}));
+})();
 
 /* ---------- holat ---------- */
 let S=load();
@@ -246,7 +289,7 @@ function pHome(){
    <div class="grid">
     <div class="hero"><div class="mosque">🕌</div><h1>Assalomu alaykum!</h1><p>Bugungi kun ham yaxshi amallar bilan boshlansin. 💚</p><div class="date">📅 ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()} · ${WD[d.getDay()]}</div></div>
     <div class="card"><div class="row sp" style="margin-bottom:12px"><div><h2>🕌 Namozlar</h2><div class="sub">Bugungi namozlaringiz</div></div><span class="badge">${n}/5 ${n===5?'Barchasi o\'qildi ✓':''}</span></div><div class="prow">${prayerCards(t)}</div></div>
-    <div class="grid" style="grid-template-columns:1fr 1.3fr">
+    <div class="grid duo">
      <div class="card"><h3>🏋️ Sport</h3><div class="sub">Bugungi mashg'ulotlar</div><div class="row" style="margin-top:12px;gap:14px">${ring(Math.round(ws/S.wk*100),84,'#14d98a')}<div><b style="font-size:17px">${ws}/${S.wk}</b><div class="sub">hafta davomida</div></div></div><button class="btn sm" style="margin-top:12px;width:100%" data-a="go" data-p="sport">${sd?'✓ Bugun bajarildi':'Mashg\'ulotni boshlash'}</button></div>
      <div class="card"><h3>Umumiy statistika</h3><div class="sub">Bu oy davomida</div><div class="grid three" style="margin-top:10px;gap:8px"><div class="mini"><small>Namozlar</small><b>${ms.done}/${ms.total}</b></div><div class="mini"><small>Sport</small><b>${ms.sport}/${ms.days}</b></div><div class="mini"><small>Ketma-ket</small><b>🔥${streak()}</b></div></div></div>
     </div>
@@ -345,7 +388,27 @@ function render(){
   const nav=NAV.map(n=>`<button class="${page===n[0]?'on':''}" data-a="go" data-p="${n[0]}"><span>${n[1]}</span>${n[2]}</button>`).join('');
   document.getElementById('bnav').innerHTML=NAV.map(n=>`<button class="${page===n[0]?'on':''}" data-a="go" data-p="${n[0]}"><span>${n[1]}</span>${n[2].split(' ')[0]}</button>`).join('');
   document.getElementById('side').innerHTML=`<div class="logo"><div class="lg">🕌</div><div><b style="font-size:19px">Intizom</b><div class="sub">Yaxshilik sari har qadam</div></div></div>`+nav;
+  const bn=document.getElementById('bnav'),ab=bn.querySelector('.on');
+  if(ab)bn.scrollLeft=ab.offsetLeft-bn.clientWidth/2+ab.clientWidth/2;
+  if(anim){document.getElementById('view').animate([{transform:`translateX(${anim*50}px)`,opacity:0},{transform:'none',opacity:1}],{duration:230,easing:'ease-out'});anim=0}
 }
+let anim=0;
+function swipe(d){
+  const i=NAV.findIndex(n=>n[0]===page),j=i+d;
+  if(j<0||j>=NAV.length)return;
+  page=NAV[j][0];cur=new Date();cur.setDate(1);anim=d;render();window.scrollTo(0,0);
+}
+let tx=0,ty=0,tt=0,skip=false;
+document.addEventListener('touchstart',e=>{
+  const t=e.touches[0];tx=t.clientX;ty=t.clientY;tt=Date.now();
+  skip=!!e.target.closest('input,textarea,.bnav')||document.getElementById('mod').classList.contains('show');
+},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(skip)return;
+  const t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;
+  if(Math.abs(dx)<70||Math.abs(dy)>Math.abs(dx)*0.6||Date.now()-tt>700)return;
+  swipe(dx<0?1:-1);
+},{passive:true});
 
 /* ---------- hodisalar ---------- */
 document.addEventListener('click',e=>{
